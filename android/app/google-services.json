@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "316744088637",
+    "project_id": "class-management-system-b8086",
+    "storage_bucket": "class-management-system-b8086.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316744088637:android:eb84ccac11bcb3ff2a7e54",
+        "android_client_info": {
+          "package_name": "com.moki.cms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316744088637-sjq7le7lv3hm3rgfmsl205h0q06sr67i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-85anZKsA3IkwLpoVFPYoTSqRTQWhD8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316744088637-sjq7le7lv3hm3rgfmsl205h0q06sr67i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
