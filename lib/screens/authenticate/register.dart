@@ -1,4 +1,5 @@
 import 'package:cms/services/auth.dart';
+import 'package:cms/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -14,6 +15,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   // text field state
   String email = '';
@@ -22,12 +24,13 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blue[800],
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         elevation: 0.0,
-        title: Text('Register User To CMS', style: TextStyle(color:Colors.yellow[100]),),
+        title: Text('Register User To CMS', style: TextStyle(color:Colors.yellow[100]),
+        ),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.login_rounded),
@@ -101,9 +104,13 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    setState(() => loading = true);
                     dynamic result2 = await _auth.registrationEmailPword(email, password);
                     if(result2 == null){
-                      setState(() => error = 'Please enter a valid email');
+                      setState(() {
+                        error = 'Please enter a valid email';
+                        loading = false;
+                      });
                     }
                   }
                 },
