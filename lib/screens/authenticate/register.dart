@@ -29,7 +29,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         elevation: 0.0,
-        title: Text('Register User To CMS', style: TextStyle(color:Colors.yellow[100]),
+        title: Text('Register User', style: TextStyle(color:Colors.orange[50]),
         ),
         actions: <Widget>[
           FlatButton.icon(
@@ -42,12 +42,20 @@ class _RegisterState extends State<Register> {
           )
         ],
       ),
+
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
+              RichText(
+                text: TextSpan(
+                  text: 'Class Management System',
+                  style: TextStyle(color:Colors.blue[100], fontSize: 25, fontFamily: 'Nunito'),
+                ),
+              ),
+
               SizedBox(height: 20.0),
               TextFormField(
                 style: TextStyle(color: Colors.blue[100]),
@@ -71,6 +79,7 @@ class _RegisterState extends State<Register> {
                 setState(() => email = val);
                 }
               ),
+
               SizedBox(height: 20.0),
               TextFormField(
                 style: TextStyle(color: Colors.blue[100]),

@@ -31,7 +31,7 @@ class _SignInState extends State<SignIn> {
         elevation: 0.0,
         title: Text(
           'Please Sign In',
-          style: TextStyle(color: Colors.yellow[100]),
+          style: TextStyle(color: Colors.orange[50]),
         ),
         actions: <Widget>[
           FlatButton.icon(
@@ -43,12 +43,20 @@ class _SignInState extends State<SignIn> {
               })
         ],
       ),
+
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
+              RichText(
+                text: TextSpan(
+                  text: 'Class Management System',
+                  style: TextStyle(color:Colors.blue[100], fontSize: 25, fontFamily: 'Nunito'),
+                ),
+              ),
+
               SizedBox(height: 20.0),
               TextFormField(
                   style: TextStyle(color: Colors.blue[100]),
@@ -75,6 +83,7 @@ class _SignInState extends State<SignIn> {
                   onChanged: (val) {
                     setState(() => email = val);
                   }),
+                  
               SizedBox(height: 20.0),
               TextFormField(
                   style: TextStyle(color: Colors.blue[100]),
