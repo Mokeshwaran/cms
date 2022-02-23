@@ -1,5 +1,6 @@
 import 'package:cms/services/auth.dart';
 import 'package:cms/shared/loading.dart';
+import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -99,7 +100,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 obscureText: true,
-                validator: (val) => val!.length < 8 ? 'Enter password with more than 8 characters' : null,
+                validator: (val) => val!.length < 8 ? 'Password must be more than 8 characters' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 }
@@ -123,18 +124,7 @@ class _RegisterState extends State<Register> {
                     }
                   }
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange.shade400),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.5),
-                      side: BorderSide(
-                      color: Colors.orange.shade400,
-                      width: 2.0,
-                      ),
-                    ),
-                  ),
-                )
+                style: textstyles_main,
               ),
               SizedBox(height: 12.0),
               Text(

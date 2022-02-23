@@ -2,6 +2,7 @@ import 'package:cms/models/myclass.dart';
 import 'package:cms/services/auth.dart';
 import 'package:cms/services/dbase.dart';
 import 'package:cms/screens/home/class_list.dart';
+import 'package:cms/shared/button_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,13 +13,14 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Myclass?>?>.value(
-        initialData: null,
-        value: DbaseService(uid: '').classes,
-        child: Scaffold(
+    return StreamProvider<List<Myclass>?>.value(
+      initialData: null,
+      value: DbaseService(uid: null).classes,
+      child: Scaffold(
         backgroundColor: Colors.blue[800],
         appBar: AppBar(
-          title: Text('Class Management System', style: TextStyle(color: Colors.yellow[50])),
+          title: Text('Class Management System',
+              style: TextStyle(color: Colors.yellow[50])),
           backgroundColor: Colors.orange[400],
           elevation: 0.0,
           actions: <Widget>[
@@ -34,7 +36,15 @@ class Home extends StatelessWidget {
             )
           ],
         ),
-        body: ClassList(),
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+          child: Column(
+            children: <Widget>[
+              ButtonList(),
+              Expanded(child: MyclassList()),
+            ],
+          ),
+        ),
       ),
     );
   }
