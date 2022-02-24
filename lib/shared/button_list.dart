@@ -24,7 +24,10 @@ class ButtonList extends StatelessWidget {
                       'Classes',
                       style: TextStyle(color: Colors.green.shade50),
                     ),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => ClassesPage()));
+                    },
                     style: textstyles,
                   ),
                 ),
@@ -66,6 +69,7 @@ class _ButtonList2State extends State<ButtonList2> {
   final String? user = FirebaseAuth.instance.currentUser?.uid;
   String? currentUserName;
 
+  @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
@@ -145,3 +149,94 @@ class _ButtonList2State extends State<ButtonList2> {
     );
   }
 }
+
+class ButtonList3 extends StatefulWidget {
+  const ButtonList3({Key? key}) : super(key: key);
+
+  @override
+  State<ButtonList3> createState() => _ButtonList3State();
+}
+
+class _ButtonList3State extends State<ButtonList3> {
+  final collection = FirebaseFirestore.instance.collection('classes');
+  final String? user = FirebaseAuth.instance.currentUser?.uid;
+  String? currentClassName;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('classes')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      currentClassName = snapshot['myclass'];
+      print(currentClassName);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //Show Modify Bottom Sheet
+    void _modifyClassname() {
+      showModalBottomSheet(
+          backgroundColor: Colors.blue[100],
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: ClassSettingsForm(),
+            );
+          });
+    }
+
+    return ListView(
+      shrinkWrap: true,
+      children: <Widget>[
+        SingleChildScrollView(
+          child: Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 50.0,
+                  child: ElevatedButton(
+                    child: Text(
+                      'Modify',
+                      style: TextStyle(color: Colors.green.shade50),
+                    ),
+                    onPressed: () => _modifyClassname(),
+                    style: textstyles,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 50.0,
+                  child: ElevatedButton(
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.red.shade50),
+                    ),
+                    onPressed: () async {
+                      if (user != null) {
+                        collection.doc(user).delete().then((value) => '');
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                'User $currentClassName deleted successfully')));
+                      } else {
+                        print('');
+                      }
+                    },
+                    style: textstyles_delete,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+

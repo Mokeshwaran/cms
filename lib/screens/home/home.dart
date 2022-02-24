@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Myclass>?>.value(
+    return StreamProvider<List<MyClass>?>.value(
       initialData: null,
       value: DbaseService(uid: null).classes,
       child: Scaffold(

@@ -4,7 +4,8 @@ import 'package:cms/models/myclass.dart';
 
 class DbaseService {
   final String? uid;
-  DbaseService({this.uid});
+  final String? mycls;
+  DbaseService({this.uid, this.mycls});
 
   // collection reference
   final CollectionReference classCluster =
@@ -12,16 +13,32 @@ class DbaseService {
 
   Future updateUserData(String? mycls, String? name) async {
     return await classCluster.doc(uid).set({
-      'myclass': mycls,
+      //'myclass': mycls,
       'name': name,
     });
   }
 
+  Future updateClassesData(String? mycls) async {
+    return await classCluster.doc(uid).set({
+      'myclass': mycls,
+    });
+  }
+
   // class list from snapshot
-  List<Myclass> _myclassList(QuerySnapshot querySnapshot) {
+  List<MyClass> _myclassList(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((docs) {
-      return Myclass(
-          mycls: docs.get('myclass') ?? '', name: docs.get('name') ?? '');
+      return MyClass(
+          mycls: docs.get('myclass') ?? '',
+          name: docs.get('name') ?? ''
+        );
+    }).toList();
+  }
+
+
+  List<MyClassesData> _myclassesDataList(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((docs) {
+      return MyClassesData(
+          mycls: docs.get('myclass') ?? '');
     }).toList();
   }
 
@@ -32,13 +49,24 @@ class DbaseService {
     );
   }
 
+  MyClassesData _myclassesDataSnap(DocumentSnapshot snapshot) {
+    return MyClassesData(
+      //uid: uid,
+      mycls: snapshot.get('myclass') ?? '',
+    );
+  }
+
   // get class stream
-  Stream<List<Myclass>> get classes {
+  Stream<List<MyClass>> get classes {
     // 'classes' can be whatever you want
     return classCluster.snapshots().map(_myclassList);
   }
 
   Stream<UserData> get userData {
     return classCluster.doc(uid).snapshots().map(_userDataSnap);
+  }
+
+  Stream<MyClassesData> get myClassesData {
+    return classCluster.doc(uid).snapshots().map(_myclassesDataSnap);
   }
 }

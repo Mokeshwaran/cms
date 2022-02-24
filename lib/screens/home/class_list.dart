@@ -13,14 +13,14 @@ class _MyclassListState extends State<MyclassList> {
   @override
   Widget build(BuildContext context) {
     
-    final classes = Provider.of<List<Myclass>?>(context) ?? [];
+    final classes = Provider.of<List<MyClass>?>(context) ?? [];
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: classes.length,
       itemBuilder: (context, index) {
-          return MyclassTile(myclass: classes[index]);
+          return MyClassTile(myclass: classes[index]);
       },
     );
   }
@@ -37,7 +37,7 @@ class UsersList extends StatefulWidget {
 class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<Myclass>?>(context) ?? [];
+    final users = Provider.of<List<MyClass>?>(context) ?? [];
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
@@ -45,6 +45,30 @@ class _UsersListState extends State<UsersList> {
       itemCount: users.length,
       itemBuilder: (context, index) {
           return UsersTile(users: users[index]);
+      },
+    );
+  }
+}
+
+//classes list
+class ClassesList extends StatefulWidget {
+  const ClassesList({ Key? key }) : super(key: key);
+
+  @override
+  _ClassesListState createState() => _ClassesListState();
+}
+
+class _ClassesListState extends State<ClassesList> {
+  @override
+  Widget build(BuildContext context) {
+    final classes = Provider.of<List<MyClass>?>(context) ?? [];
+
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: classes.length,
+      itemBuilder: (context, index) {
+          return ClassesTile(classes: classes[index]);
       },
     );
   }
