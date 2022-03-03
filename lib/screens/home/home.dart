@@ -41,7 +41,7 @@ class Home extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ButtonList(),
-              Expanded(child: MyclassList()),
+              Expanded(child: MyClassList()),
             ],
           ),
         ),
