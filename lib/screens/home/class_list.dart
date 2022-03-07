@@ -61,16 +61,17 @@ class ClassesList extends StatefulWidget {
 }
 
 class _ClassesListState extends State<ClassesList> {
-  Widget _buildList(QuerySnapshot? snapshot) {
+  String? classId;
 
-    void _modifyClassName() {
+  Widget buildList(QuerySnapshot? snapshot) {
+    void _modifyClassName(id) {
       showModalBottomSheet(
           backgroundColor: Colors.blue[100],
           context: context,
           builder: (context) {
             return Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: ClassSettingsFormModify(),
+              child: ClassSettingsFormModify(id: id),
             );
           });
     }
@@ -79,10 +80,14 @@ class _ClassesListState extends State<ClassesList> {
       itemCount: snapshot?.docs.length,
       itemBuilder: (context, index) {
         final doc = snapshot?.docs[index];
+        String id = doc!.id;
         return InkWell(
-          onTap:() => _modifyClassName(),
+          key: Key(id),
+          onTap: () {
+            _modifyClassName(id);
+          },
           child: Dismissible(
-            key: Key(doc!.id),
+            key: Key(id),
             background: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Container(
@@ -90,22 +95,18 @@ class _ClassesListState extends State<ClassesList> {
                 child: Center(
                   child: RichText(
                     text: const TextSpan(
-                        text: 'Deleted',
-                        style: TextStyle(
-                          color:Colors.white,
+                      text: 'Deleted',
+                      style: TextStyle(
+                          color: Colors.white,
                           fontSize: 15,
-                          fontFamily: 'Nunito'
-                        ),
-                      ),
+                          fontFamily: 'Nunito'),
                     ),
                   ),
                 ),
               ),
+            ),
             onDismissed: (direction) {
-              FirebaseFirestore.instance
-                  .collection('myclasses')
-                  .doc(doc.id)
-                  .delete();
+              FirebaseFirestore.instance.collection('myclasses').doc(doc.id).delete();
             },
             child: Card(
               margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 6.0),
@@ -125,7 +126,7 @@ class _ClassesListState extends State<ClassesList> {
         stream: FirebaseFirestore.instance.collection('myclasses').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const LinearProgressIndicator();
-          return Expanded(child: _buildList(snapshot.data));
+          return Expanded(child: buildList(snapshot.data));
         });
   }
 }

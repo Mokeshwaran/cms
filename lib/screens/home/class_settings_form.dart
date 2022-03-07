@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cms/shared/decorations.dart';
 import 'package:cms/shared/text_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ClassSettingsForm extends StatefulWidget {
@@ -12,6 +13,7 @@ class ClassSettingsForm extends StatefulWidget {
 
 class _ClassSettingsFormState extends State<ClassSettingsForm> {
   final _formKey = GlobalKey<FormState>();
+  String id = FirebaseFirestore.instance.collection('myclasses').doc().id;
   String? _currentClass;
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,12 @@ class _ClassSettingsFormState extends State<ClassSettingsForm> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  FirebaseFirestore.instance.collection("myclasses").add(
+                  FirebaseFirestore.instance
+                      .collection("myclasses")
+                      .doc(id)
+                      .set(
                     {
+                      'classID': id,
                       'myclass': _currentClass,
                     },
                   );
@@ -57,7 +63,8 @@ class _ClassSettingsFormState extends State<ClassSettingsForm> {
 }
 
 class ClassSettingsFormModify extends StatefulWidget {
-  const ClassSettingsFormModify({Key? key}) : super(key: key);
+  String id;
+  ClassSettingsFormModify({Key? key, required this.id}) : super(key: key);
 
   @override
   State<ClassSettingsFormModify> createState() =>
@@ -65,11 +72,11 @@ class ClassSettingsFormModify extends StatefulWidget {
 }
 
 class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   String? _modifiedClass;
   @override
   Widget build(BuildContext context) {
-
     return Form(
         key: _formKey,
         child: Column(
@@ -97,18 +104,42 @@ class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  FirebaseFirestore.instance
+                  await FirebaseFirestore.instance
                       .collection("myclasses")
-                      .doc()
+                      .doc(widget.id)
                       .update(
                     {
+                      'classID': widget.id,
                       'myclass': _modifiedClass,
                     },
                   );
+                  print('');
                   Navigator.pop(context);
                 }
                 //_fieldText.clear();
-                )
+                ),
+            SizedBox(height: 150.0),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  style: textstyles,
+                  child: Text(
+                    "Assign me to this Class",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    final User? user = auth.currentUser;
+                    final uid = user?.uid;
+                    // await FirebaseFirestore.instance
+                    //     .collection('classes')
+                    //     .doc(uid)
+                    //     .update({
+                    //       'myclass': 
+                    //       });
+                  }
+                  //_fieldText.clear();
+                  ),
+            ),
           ],
         ));
   }

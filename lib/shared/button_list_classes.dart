@@ -44,21 +44,6 @@ class _ClassButtonListState extends State<ClassButtonList> {
                   ),
                 ),
               ),
-              SizedBox(width: 7.5),
-              Expanded(
-                child: SizedBox(
-                  height: 50.0,
-                  child: ElevatedButton(
-                    child: Text(
-                      'Modify',
-                      style: TextStyle(color: Colors.green.shade50),
-                    ),
-                    onPressed: () => {},
-                    style: textstyles,
-                  ),
-                ),
-              ),
-
             ],
           ),
         ),
