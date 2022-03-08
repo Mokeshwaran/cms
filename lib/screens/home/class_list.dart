@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cms/models/myclass.dart';
 import 'package:cms/screens/home/class_settings_form.dart';
+import 'package:cms/shared/text_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'myclass_tile.dart';
@@ -61,6 +63,7 @@ class ClassesList extends StatefulWidget {
 }
 
 class _ClassesListState extends State<ClassesList> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   String? classId;
 
   Widget buildList(QuerySnapshot? snapshot) {
@@ -76,6 +79,70 @@ class _ClassesListState extends State<ClassesList> {
           });
     }
 
+    void _assignClassName(id) {
+      showModalBottomSheet(
+          backgroundColor: Colors.blue[100],
+          context: context,
+          builder: (context) {
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                child: ElevatedButton(
+                  style: textstyles,
+                  child: Text(
+                    'Assign Me To This Class',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w900),
+                  ),
+                  onPressed: () async {
+                    final assignedClass = await FirebaseFirestore.instance
+                        .collection('myclasses')
+                        .doc(id)
+                        .get()
+                        .then((value) => value.data()!['myclass']);
+                    await FirebaseFirestore.instance
+                        .collection('classes')
+                        .doc(auth.currentUser?.uid)
+                        .update({
+                      'myclass': assignedClass,
+                    });
+                    Navigator.pop(context);
+                  },
+                ));
+          });
+    }
+
+    void _resignClassName(id) async {
+      final assignedClass = await FirebaseFirestore.instance
+          .collection('classes')
+          .doc(auth.currentUser?.uid)
+          .get()
+          .then((value) => value.data()!['myclass']);
+      showModalBottomSheet(
+          backgroundColor: Colors.blue[100],
+          context: context,
+          builder: (context) {
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                child: ElevatedButton(
+                  style: textstyles_delete,
+                  child: Text(
+                    'Resign Me From ${assignedClass}',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w900),
+                  ),
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
+                        .collection('classes')
+                        .doc(auth.currentUser?.uid)
+                        .update({
+                      'myclass': 'Idle',
+                    });
+                    Navigator.pop(context);
+                  },
+                ));
+          });
+    }
+
     return ListView.builder(
       itemCount: snapshot?.docs.length,
       itemBuilder: (context, index) {
@@ -83,8 +150,19 @@ class _ClassesListState extends State<ClassesList> {
         String id = doc!.id;
         return InkWell(
           key: Key(id),
-          onTap: () {
-            _modifyClassName(id);
+          onTap: () => _modifyClassName(id),
+          onLongPress: () async {
+            final checkClass = await FirebaseFirestore.instance
+                .collection('classes')
+                .doc(auth.currentUser?.uid)
+                .get()
+                .then((value) => value.data()!['myclass'].toString());
+            print(checkClass);
+            if (checkClass != 'Idle') {
+              return _resignClassName(id);
+            } else {
+              return _assignClassName(id);
+            }
           },
           child: Dismissible(
             key: Key(id),
@@ -106,7 +184,10 @@ class _ClassesListState extends State<ClassesList> {
               ),
             ),
             onDismissed: (direction) {
-              FirebaseFirestore.instance.collection('myclasses').doc(doc.id).delete();
+              FirebaseFirestore.instance
+                  .collection('myclasses')
+                  .doc(doc.id)
+                  .delete();
             },
             child: Card(
               margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 6.0),

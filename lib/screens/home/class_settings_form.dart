@@ -72,7 +72,6 @@ class ClassSettingsFormModify extends StatefulWidget {
 }
 
 class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   String? _modifiedClass;
   @override
@@ -117,29 +116,7 @@ class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
                   Navigator.pop(context);
                 }
                 //_fieldText.clear();
-                ),
-            SizedBox(height: 150.0),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                  style: textstyles,
-                  child: Text(
-                    "Assign me to this Class",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    final User? user = auth.currentUser;
-                    final uid = user?.uid;
-                    // await FirebaseFirestore.instance
-                    //     .collection('classes')
-                    //     .doc(uid)
-                    //     .update({
-                    //       'myclass': 
-                    //       });
-                  }
-                  //_fieldText.clear();
-                  ),
-            ),
+              ),
           ],
         ));
   }
