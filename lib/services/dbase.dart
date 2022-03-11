@@ -41,4 +41,8 @@ class DbaseService {
   Stream<UserData> get userData {
     return classCluster.doc(uid).snapshots().map(_userDataSnap);
   }
+
+  Future deleteuser() {
+    return classCluster.doc(uid).delete();
+  }
 }

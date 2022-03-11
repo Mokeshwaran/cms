@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:cms/services/auth.dart';
 import 'package:cms/shared/loading.dart';
 import 'package:cms/shared/text_styles.dart';
@@ -26,7 +28,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             backgroundColor: Colors.blue[800],
             appBar: AppBar(
@@ -37,9 +39,10 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(color: Colors.orange[50]),
               ),
               actions: <Widget>[
+                // ignore: deprecated_member_use
                 FlatButton.icon(
-                    icon: Icon(Icons.app_registration_rounded),
-                    label: Text('Register'),
+                    icon: const Icon(Icons.app_registration_rounded),
+                    label: const Text('Register'),
                     textColor: Colors.blue[600],
                     onPressed: () {
                       widget.switchPage();
@@ -47,7 +50,8 @@ class _SignInState extends State<SignIn> {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -61,7 +65,7 @@ class _SignInState extends State<SignIn> {
                             fontFamily: 'Nunito'),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                         style: TextStyle(color: Colors.blue[100]),
                         cursorColor: Colors.blue[100],
@@ -88,7 +92,7 @@ class _SignInState extends State<SignIn> {
                         onChanged: (val) {
                           setState(() => email = val);
                         }),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                         style: TextStyle(color: Colors.blue[100]),
                         cursorColor: Colors.blue[100],
@@ -117,7 +121,7 @@ class _SignInState extends State<SignIn> {
                         onChanged: (val) {
                           setState(() => password = val);
                         }),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     ElevatedButton(
                       child: Text(
                         'Sign In',
@@ -139,10 +143,10 @@ class _SignInState extends State<SignIn> {
                       },
                       style: textstyles_main,
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
                   ],
                 ),

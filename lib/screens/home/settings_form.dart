@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:cms/models/MyUser.dart';
 import 'package:cms/services/dbase.dart';
 import 'package:cms/shared/decorations.dart';
@@ -16,8 +18,8 @@ class SettingsForm extends StatefulWidget {
 class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
   //final _fieldText = TextEditingController();
-  late String? _currentName;
-  late String? _currentClass;
+  String? _currentName;
+  String _currentClass = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,22 +38,28 @@ class _SettingsFormState extends State<SettingsForm> {
                       "Modify Your Name",
                       style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
-                      initialValue: userData!.name,
-                      //controller: _fieldText, // you can't use initial value and controller simultaneously.
-                      style: TextStyle(color: Colors.blue[200]),
-                      cursorColor: Colors.blue[100],
-                      decoration: textInputDecoration,
-                      validator: (value) =>
-                          value!.isEmpty ? 'Please Enter Your Name' : null,
-                      onChanged: (value) =>
-                          setState(() => _currentName = value),
-                    ),
-                    SizedBox(height: 10.0),
+                        autofocus: true,
+                        initialValue: userData!.name,
+                        //controller: _fieldText, // you can't use initial value and controller simultaneously.
+                        style: TextStyle(color: Colors.blue[200]),
+                        cursorColor: Colors.blue[100],
+                        decoration: textInputDecoration,
+                        validator: (value) {
+                          value!.isEmpty ? 'Please Enter Your Name' : null;
+                        },
+                        onChanged: (value) {
+                          if (value != null && value != "") {
+                            setState(() => _currentName = value);
+                          } else {
+                            setState(() => _currentName = 'user');
+                          }
+                        }),
+                    const SizedBox(height: 10.0),
                     ElevatedButton(
                       style: textstyles_main,
-                      child: Text(
+                      child: const Text(
                         "Update",
                         style: TextStyle(color: Colors.white),
                       ),
@@ -59,7 +67,7 @@ class _SettingsFormState extends State<SettingsForm> {
                         if (_formKey.currentState!.validate()) {
                           await DbaseService(uid: user3?.uid).updateUserData(
                             _currentClass = "Idle",
-                            _currentName ?? userData.name,
+                            _currentName,
                           );
                           Navigator.pop(context);
                         }
@@ -67,12 +75,10 @@ class _SettingsFormState extends State<SettingsForm> {
                       },
                     )
                   ],
-                )
-              );
+                ));
           } else {
-            return Loading();
+            return const Loading();
           }
-        }
-      );
+        });
   }
 }

@@ -73,7 +73,8 @@ class _ClassesListState extends State<ClassesList> {
           context: context,
           builder: (context) {
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
               child: ClassSettingsFormModify(id: id),
             );
           });
@@ -85,10 +86,11 @@ class _ClassesListState extends State<ClassesList> {
           context: context,
           builder: (context) {
             return Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 30.0),
                 child: ElevatedButton(
                   style: textstyles,
-                  child: Text(
+                  child: const Text(
                     'Assign Me To This Class',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w900),
@@ -122,12 +124,13 @@ class _ClassesListState extends State<ClassesList> {
           context: context,
           builder: (context) {
             return Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 30.0),
                 child: ElevatedButton(
                   style: textstyles_delete,
                   child: Text(
-                    'Resign Me From ${assignedClass}',
-                    style: TextStyle(
+                    'Resign Me From $assignedClass',
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w900),
                   ),
                   onPressed: () async {
@@ -157,7 +160,7 @@ class _ClassesListState extends State<ClassesList> {
                 .doc(auth.currentUser?.uid)
                 .get()
                 .then((value) => value.data()!['myclass'].toString());
-            print(checkClass);
+            //print(checkClass);
             if (checkClass != 'Idle') {
               return _resignClassName(id);
             } else {

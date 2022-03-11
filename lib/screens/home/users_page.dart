@@ -6,11 +6,10 @@ import 'package:provider/provider.dart';
 import 'class_list.dart';
 
 class UsersPage extends StatelessWidget {
-  //const UsersPage({ Key? key }) : super(key: key);
+  const UsersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return StreamProvider<List<MyClass>?>.value(
       initialData: null,
       value: DbaseService(uid: null).classes,
@@ -18,18 +17,18 @@ class UsersPage extends StatelessWidget {
         backgroundColor: Colors.blue[800],
         appBar: AppBar(
           backgroundColor: Colors.orange[400],
-          title: Text("Users"),
+          title: const Text("Users"),
           elevation: 0.0,
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
           child: Column(
             children: const <Widget>[
               ButtonList2(),
               Expanded(child: UsersList()),
-              ],
-            ),
+            ],
           ),
+        ),
       ),
     );
   }

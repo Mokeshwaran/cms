@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cms/screens/home/classes_page.dart';
 import 'package:cms/screens/home/settings_form.dart';
 import 'package:cms/screens/home/users_page.dart';
+import 'package:cms/services/auth.dart';
+import 'package:cms/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'text_styles.dart';
@@ -26,14 +30,14 @@ class ButtonList extends StatelessWidget {
                       style: TextStyle(color: Colors.green.shade50),
                     ),
                     onPressed: () async {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ClassesPage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ClassesPage()));
                     },
                     style: textstyles,
                   ),
                 ),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Expanded(
                 child: SizedBox(
                   height: 50.0,
@@ -43,8 +47,8 @@ class ButtonList extends StatelessWidget {
                       style: TextStyle(color: Colors.green.shade50),
                     ),
                     onPressed: () async {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => UsersPage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const UsersPage()));
                     },
                     style: textstyles,
                   ),
@@ -68,7 +72,11 @@ class ButtonList2 extends StatefulWidget {
 class _ButtonList2State extends State<ButtonList2> {
   final collection = FirebaseFirestore.instance.collection('classes');
   final String? user = FirebaseAuth.instance.currentUser?.uid;
+  final email = FirebaseAuth.instance.currentUser!.email;
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
   String? currentUserName;
+  String? password;
 
   @override
   void initState() {
@@ -91,10 +99,118 @@ class _ButtonList2State extends State<ButtonList2> {
           context: context,
           builder: (context) {
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: SettingsForm(),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: const SettingsForm(),
             );
           });
+    }
+
+    void errorMessage() {
+      showDialog(
+          context: context,
+          builder: (context) => const AlertDialog(
+                content: Text(
+                    'Incorrect Password, kindly check before entering',
+                    style: TextStyle(color: Colors.white)),
+                alignment: Alignment.center,
+                backgroundColor: Color(0xffAF0606),
+              ));
+    }
+
+    void progressIndicator() {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Row(
+                  children: [
+                    const LoadingDelete(),
+                    SizedBox(width: 20.0),
+                    Text('Deleting user',
+                        style: TextStyle(color: Colors.blue.shade100)),
+                  ],
+                ),
+                alignment: Alignment.center,
+                backgroundColor: Colors.blue.shade800,
+              ));
+    }
+
+    void _deleteUserForm() {
+      TextEditingController passwordController = TextEditingController();
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Enter Password To Delete The User',
+                    style: TextStyle(color: Colors.blue.shade500)),
+                insetPadding: const EdgeInsets.all(10.0),
+                backgroundColor: Colors.blue.shade100,
+                content: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextFormField(
+                          autofocus: true,
+                          controller: passwordController,
+                          style: TextStyle(color: Colors.blue[100]),
+                          cursorColor: Colors.blue[100],
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.lock_outline_rounded,
+                              color: Colors.blue.shade100,
+                            ),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(
+                                fontSize: 15.0, color: Colors.blue.shade100),
+                            fillColor: Colors.blue[600],
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue.shade400, width: 1.0)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.orange.shade400, width: 1.0),
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          obscureText: true,
+                          onChanged: (val) {
+                            setState(() => password = val);
+                          }),
+                      const SizedBox(height: 20.0),
+                      ElevatedButton(
+                        child: const Text(
+                          'DELETE USER',
+                          style: TextStyle(color: Colors.white, fontSize: 13.0),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => progressIndicator());
+                            dynamic result2 = await _auth.deleteUser(
+                                email!, passwordController.text);
+                            print(result2);
+                            if (result2 == null) {
+                              setState(
+                                () => errorMessage(),
+                              );
+                            } else {
+                              collection.doc(user).delete().then((value) => '');
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'User $currentUserName deleted successfully')));
+                              passwordController.clear();
+                              FirebaseAuth.instance.signOut();
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            }
+                          }
+                        },
+                        style: textstyles_delete,
+                      ),
+                    ],
+                  ),
+                ),
+              ));
     }
 
     return ListView(
@@ -116,7 +232,7 @@ class _ButtonList2State extends State<ButtonList2> {
                   ),
                 ),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Expanded(
                 child: SizedBox(
                   height: 50.0,
@@ -126,17 +242,10 @@ class _ButtonList2State extends State<ButtonList2> {
                       style: TextStyle(color: Colors.red.shade50),
                     ),
                     onPressed: () async {
-                      if (user != null) {
-                        collection.doc(user).delete().then((value) => '');
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                'User $currentUserName deleted successfully')));
-                      } else {
-                        print('');
+                      _deleteUserForm();
+                      if (user == null) {
+                        Navigator.pop(context);
                       }
-                      await FirebaseAuth.instance.currentUser?.delete();
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.pop(context);
                     },
                     style: textstyles_delete,
                   ),

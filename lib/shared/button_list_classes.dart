@@ -3,7 +3,7 @@ import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class ClassButtonList extends StatefulWidget {
-  const ClassButtonList({ Key? key }) : super(key: key);
+  const ClassButtonList({Key? key}) : super(key: key);
 
   @override
   State<ClassButtonList> createState() => _ClassButtonListState();
@@ -12,15 +12,15 @@ class ClassButtonList extends StatefulWidget {
 class _ClassButtonListState extends State<ClassButtonList> {
   @override
   Widget build(BuildContext context) {
-
     void _modifyClassname() {
       showModalBottomSheet(
           backgroundColor: Colors.blue[100],
           context: context,
           builder: (context) {
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: ClassSettingsForm(),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: const ClassSettingsForm(),
             );
           });
     }
