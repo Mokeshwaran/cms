@@ -107,24 +107,23 @@ class AboutMe extends StatelessWidget {
               const SizedBox(height: 50.0),
               const Center(
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://www.tutorialkart.com/img/hummingbird.png'),
+                  backgroundImage: AssetImage('assets/images/moki.jpg'),
                   radius: 40.0,
                 ),
               ),
               const SizedBox(height: 20.0),
-              const Text("Hey there, I'm Mokeshwaran aka Moki",
-                  style: help_textstyle_about),
-              const SizedBox(
-                height: 80.0,
-                width: 250.0,
-                child: Text(
-                    "I'm the developer of this application,\nI made this to minimize the struggle of my faculties.",
-                    textAlign: TextAlign.center,
-                    style: help_textstyle_about),
+              FittedBox(
+                fit: BoxFit.contain,
+                child: const Text(
+                    "Hey there, I'm Mokeshwaran aka Moki.\nI'm the developer of this application,\nI made this to minimize the struggle of my faculties.",
+                    style: help_textstyle_about,
+                    textAlign: TextAlign.center),
               ),
               const SizedBox(height: 40.0),
-              const Text("TO KNOW ME MORE", style: help_textstyle_intro),
+              FittedBox(
+                  fit: BoxFit.contain,
+                  child: const Text("TO KNOW ME MORE",
+                      style: help_textstyle_intro)),
               const SizedBox(height: 30.0),
               SizedBox(
                 width: 325.0,
@@ -132,31 +131,31 @@ class AboutMe extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () => launch(
-                            'https://www.facebook.com/mokeshwaran.ramesh.7/'),
+                          'https://www.facebook.com/mokeshwaran.ramesh.7/'),
                       icon: const Icon(FontAwesomeIcons.facebookSquare),
                       color: const Color(0xff4267B2),
                       iconSize: 50.0,
                     ),
                     const SizedBox(width: 20.0),
                     IconButton(
-                      onPressed: () => launch(
-                            'https://www.instagram.com/mstrmnd.xiii/'),
+                      onPressed: () =>
+                          launch('https://www.instagram.com/mstrmnd.xiii/'),
                       icon: const Icon(FontAwesomeIcons.instagramSquare),
                       color: const Color(0xffcd486b),
                       iconSize: 50.0,
                     ),
                     const SizedBox(width: 20.0),
                     IconButton(
-                      onPressed: () => launch(
-                            'https://www.linkedin.com/in/mokeshwaran-r/'),
+                      onPressed: () =>
+                          launch('https://www.linkedin.com/in/mokeshwaran-r/'),
                       icon: const Icon(FontAwesomeIcons.linkedin),
                       color: const Color(0xff0e76a8),
                       iconSize: 50.0,
                     ),
                     const SizedBox(width: 20.0),
                     IconButton(
-                      onPressed: () => launch(
-                            'https://www.snapchat.com/add/smokeythefri13'),
+                      onPressed: () =>
+                          launch('https://www.snapchat.com/add/smokeythefri13'),
                       icon: const Icon(FontAwesomeIcons.snapchatSquare),
                       color: const Color(0xffFFFC00),
                       iconSize: 50.0,
@@ -171,8 +170,8 @@ class AboutMe extends StatelessWidget {
                   children: [
                     Expanded(
                       child: IconButton(
-                        onPressed: () => launch(
-                              'https://github.com/Mokeshwaran'),
+                        onPressed: () =>
+                            launch('https://github.com/Mokeshwaran'),
                         icon: const Icon(FontAwesomeIcons.github),
                         color: const Color(0xff000000),
                         iconSize: 75.0,
@@ -184,17 +183,16 @@ class AboutMe extends StatelessWidget {
               const SizedBox(height: 50.0),
               SizedBox(
                 width: 300.0,
-                child: Center(
-                  child: Text(
-                    "Thank You For Using This App",
-                    style: help_textstyle_thankyou,
-                  ),
+                child: Text(
+                  "Thank You For Using This App",
+                  style: help_textstyle_thankyou,
                 ),
               ),
               const SizedBox(height: 50.0),
               SizedBox(
                 width: 300.0,
-                child: Center(
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
                   child: Text(
                     "With 💖 Moki",
                     style: help_textstyle_withlove,

@@ -27,7 +27,8 @@ class ButtonList extends StatelessWidget {
                   child: ElevatedButton(
                     child: Text(
                       'Classes',
-                      style: TextStyle(color: Colors.green.shade50),
+                      style: TextStyle(
+                          color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () async {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -44,7 +45,8 @@ class ButtonList extends StatelessWidget {
                   child: ElevatedButton(
                     child: Text(
                       'Users',
-                      style: TextStyle(color: Colors.green.shade50),
+                      style: TextStyle(
+                          color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () async {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -225,7 +227,7 @@ class _ButtonList2State extends State<ButtonList2> {
                   child: ElevatedButton(
                     child: Text(
                       'Modify',
-                      style: TextStyle(color: Colors.green.shade50),
+                      style: TextStyle(color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () => _modifyUsername(),
                     style: textstyles,
@@ -239,7 +241,7 @@ class _ButtonList2State extends State<ButtonList2> {
                   child: ElevatedButton(
                     child: Text(
                       'Delete',
-                      style: TextStyle(color: Colors.red.shade50),
+                      style: TextStyle(color: Colors.red.shade50, fontSize: 17.0),
                     ),
                     onPressed: () async {
                       _deleteUserForm();

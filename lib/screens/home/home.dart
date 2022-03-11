@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
             actions: <Widget>[
               TextButton.icon(
                 icon: const Icon(Icons.logout_rounded),
-                label: const Text('Logout'),
+                label: const Text('Logout', style: TextStyle(fontSize: 17.0),),
                 style: TextButton.styleFrom(
                   primary: Colors.blue[600],
                 ),
@@ -43,6 +43,7 @@ class Home extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
             child: Column(
               children: const <Widget>[
+                SizedBox(height: 5.0),
                 ButtonList(),
                 Expanded(child: MyClassList()),
               ],

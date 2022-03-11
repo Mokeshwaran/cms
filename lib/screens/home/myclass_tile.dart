@@ -12,11 +12,8 @@ class MyClassTile extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 6.0),
         child: ListTile(
-          leading: const CircleAvatar(
-            radius: 25.0,
-          ),
           title: Text(myclass.name!),
-          subtitle: Text('Assigned ${myclass.mycls} class'),
+          subtitle: Text('Assigned to ${myclass.mycls}'),
         ),
       ),
     );
@@ -34,9 +31,6 @@ class UsersTile extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 6.0),
         child: ListTile(
-          leading: const CircleAvatar(
-            radius: 25.0,
-          ),
           title: Text(users.name!),
         ),
       ),

@@ -37,7 +37,7 @@ class _ClassButtonListState extends State<ClassButtonList> {
                   child: ElevatedButton(
                     child: Text(
                       'Add',
-                      style: TextStyle(color: Colors.green.shade50),
+                      style: TextStyle(color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () => _modifyClassname(),
                     style: textstyles,

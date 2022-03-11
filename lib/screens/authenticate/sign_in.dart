@@ -42,7 +42,8 @@ class _SignInState extends State<SignIn> {
                 // ignore: deprecated_member_use
                 FlatButton.icon(
                     icon: const Icon(Icons.app_registration_rounded),
-                    label: const Text('Register'),
+                    label: const Text('Register',
+                        style: TextStyle(fontSize: 17.0)),
                     textColor: Colors.blue[600],
                     onPressed: () {
                       widget.switchPage();
@@ -76,7 +77,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           hintText: 'Email',
                           hintStyle: TextStyle(
-                              fontSize: 15.0, color: Colors.blue.shade100),
+                              fontSize: 17.0, color: Colors.blue.shade100),
                           fillColor: Colors.blue[600],
                           filled: true,
                           enabledBorder: OutlineInputBorder(
@@ -103,7 +104,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           hintText: 'Password',
                           hintStyle: TextStyle(
-                              fontSize: 15.0, color: Colors.blue.shade100),
+                              fontSize: 17.0, color: Colors.blue.shade100),
                           fillColor: Colors.blue[600],
                           filled: true,
                           enabledBorder: OutlineInputBorder(
@@ -125,7 +126,8 @@ class _SignInState extends State<SignIn> {
                     ElevatedButton(
                       child: Text(
                         'Sign In',
-                        style: TextStyle(color: Colors.orange.shade50),
+                        style: TextStyle(
+                            color: Colors.orange.shade50, fontSize: 17.0),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {

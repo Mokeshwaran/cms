@@ -24,7 +24,9 @@ class ClassesPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
           child: Column(
             children: const <Widget>[
+              SizedBox(height: 4.0),
               ClassButtonList(),
+              SizedBox(height: 4.0),
               Expanded(child: ClassesList()),
             ],
           ),

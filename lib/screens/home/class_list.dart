@@ -93,7 +93,7 @@ class _ClassesListState extends State<ClassesList> {
                   child: const Text(
                     'Assign Me To This Class',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w900),
+                        color: Colors.white, fontWeight: FontWeight.w900, fontSize: 17.0),
                   ),
                   onPressed: () async {
                     final assignedClass = await FirebaseFirestore.instance
@@ -131,7 +131,7 @@ class _ClassesListState extends State<ClassesList> {
                   child: Text(
                     'Resign Me From $assignedClass',
                     style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w900),
+                        color: Colors.white, fontWeight: FontWeight.w900, fontSize: 17.0),
                   ),
                   onPressed: () async {
                     await FirebaseFirestore.instance

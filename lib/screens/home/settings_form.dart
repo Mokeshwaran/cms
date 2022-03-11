@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, unnecessary_null_comparison
 
 import 'package:cms/models/MyUser.dart';
 import 'package:cms/services/dbase.dart';

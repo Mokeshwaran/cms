@@ -49,7 +49,7 @@ const help_textstyle = TextStyle(
 
 const help_textstyle_about = TextStyle(
   color: Colors.white,
-  fontSize: 15.0,
+  fontSize: 17.0,
   fontWeight: FontWeight.bold,
 );
 
@@ -76,6 +76,6 @@ const help_textstyle_thankyou = TextStyle(
 
 const help_textstyle_withlove = TextStyle(
   color: Colors.white,
-  fontSize: 13.0,
+  fontSize: 15.0,
   fontWeight: FontWeight.bold,
 );
