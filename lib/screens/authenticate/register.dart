@@ -4,6 +4,7 @@ import 'package:cms/services/auth.dart';
 import 'package:cms/shared/loading.dart';
 import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Register extends StatefulWidget {
   //const Register({Key? key, void Function() toggleView}) : super(key: key);
@@ -90,6 +91,10 @@ class _RegisterState extends State<Register> {
                         ),
                         validator: (val) =>
                             val!.isEmpty ? 'Enter an email' : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              new RegExp(r"\s\b|\b\s"))
+                        ],
                         onChanged: (val) {
                           setState(() => email = val);
                         }),
@@ -123,26 +128,29 @@ class _RegisterState extends State<Register> {
                           setState(() => password = val);
                         }),
                     const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                            color: Colors.orange.shade50, fontSize: 17.0),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          dynamic result2 = await _auth.registrationEmailPword(
-                              email, password);
-                          if (result2 == null) {
-                            setState(() {
-                              error = 'Please enter a valid email';
-                              loading = false;
-                            });
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                              color: Colors.orange.shade50, fontSize: 17.0),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            dynamic result2 = await _auth
+                                .registrationEmailPword(email, password);
+                            if (result2 == null) {
+                              setState(() {
+                                error = 'Please enter a valid email';
+                                loading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: textstyles_main,
+                        },
+                        style: textstyles_main,
+                      ),
                     ),
                     const SizedBox(height: 12.0),
                     Text(

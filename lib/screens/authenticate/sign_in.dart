@@ -4,6 +4,7 @@ import 'package:cms/services/auth.dart';
 import 'package:cms/shared/loading.dart';
 import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignIn extends StatefulWidget {
   //const SignIn({Key? key, void Function() toggleView}) : super(key: key);
@@ -90,6 +91,10 @@ class _SignInState extends State<SignIn> {
                         ),
                         validator: (val) =>
                             val!.isEmpty ? 'Enter an email' : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              new RegExp(r"\s\b|\b\s"))
+                        ],
                         onChanged: (val) {
                           setState(() => email = val);
                         }),
@@ -123,27 +128,30 @@ class _SignInState extends State<SignIn> {
                           setState(() => password = val);
                         }),
                     const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                            color: Colors.orange.shade50, fontSize: 17.0),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          dynamic result2 =
-                              await _auth.signInEmailPword(email, password);
-                          if (result2 == null) {
-                            setState(() {
-                              error =
-                                  'Could not sign in, please check email/password';
-                              loading = false;
-                            });
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                              color: Colors.orange.shade50, fontSize: 17.0),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            dynamic result2 =
+                                await _auth.signInEmailPword(email, password);
+                            if (result2 == null) {
+                              setState(() {
+                                error =
+                                    'Could not sign in, please check email/password';
+                                loading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: textstyles_main,
+                        },
+                        style: textstyles_main,
+                      ),
                     ),
                     const SizedBox(height: 12.0),
                     Text(

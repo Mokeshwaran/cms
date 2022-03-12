@@ -16,6 +16,7 @@ class _ClassButtonListState extends State<ClassButtonList> {
       showModalBottomSheet(
           backgroundColor: Colors.blue[100],
           context: context,
+          isScrollControlled: true,
           builder: (context) {
             return Container(
               padding:
@@ -37,7 +38,8 @@ class _ClassButtonListState extends State<ClassButtonList> {
                   child: ElevatedButton(
                     child: Text(
                       'Add',
-                      style: TextStyle(color: Colors.green.shade50, fontSize: 17.0),
+                      style: TextStyle(
+                          color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () => _modifyClassname(),
                     style: textstyles,

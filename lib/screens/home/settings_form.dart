@@ -33,10 +33,15 @@ class _SettingsFormState extends State<SettingsForm> {
             return Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(
-                      "Modify Your Name",
-                      style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+                    Center(
+                      child: Text(
+                        "Modify Your Name",
+                        style:
+                            TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+                      ),
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
@@ -57,23 +62,29 @@ class _SettingsFormState extends State<SettingsForm> {
                           }
                         }),
                     const SizedBox(height: 10.0),
-                    ElevatedButton(
-                      style: textstyles_main,
-                      child: const Text(
-                        "Update",
-                        style: TextStyle(color: Colors.white),
+                    Center(
+                      child: ElevatedButton(
+                        style: textstyles_main,
+                        child: const Text(
+                          "Update",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await DbaseService(uid: user3?.uid).updateUserData(
+                              _currentClass = "Idle",
+                              _currentName,
+                            );
+                            Navigator.pop(context);
+                          }
+                          //_fieldText.clear();
+                        },
                       ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          await DbaseService(uid: user3?.uid).updateUserData(
-                            _currentClass = "Idle",
-                            _currentName,
-                          );
-                          Navigator.pop(context);
-                        }
-                        //_fieldText.clear();
-                      },
-                    )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                    ),
                   ],
                 ));
           } else {

@@ -21,10 +21,14 @@ class _ClassSettingsFormState extends State<ClassSettingsForm> {
     return Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              "Add a Class",
-              style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+            Center(
+              child: Text(
+                "Add a Class",
+                style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+              ),
             ),
             const SizedBox(height: 20.0),
             TextFormField(
@@ -45,26 +49,32 @@ class _ClassSettingsFormState extends State<ClassSettingsForm> {
               },
             ),
             const SizedBox(height: 10.0),
-            ElevatedButton(
-                style: textstyles_main,
-                child: const Text(
-                  "Add",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () async {
-                  FirebaseFirestore.instance
-                      .collection("myclasses")
-                      .doc(id)
-                      .set(
-                    {
-                      'classID': id,
-                      'myclass': _currentClass,
-                    },
-                  );
-                  Navigator.pop(context);
-                }
-                //_fieldText.clear();
-                )
+            Center(
+              child: ElevatedButton(
+                  style: textstyles_main,
+                  child: const Text(
+                    "Add",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    FirebaseFirestore.instance
+                        .collection("myclasses")
+                        .doc(id)
+                        .set(
+                      {
+                        'classID': id,
+                        'myclass': _currentClass,
+                      },
+                    );
+                    Navigator.pop(context);
+                  }
+                  //_fieldText.clear();
+                  ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+            ),
           ],
         ));
   }

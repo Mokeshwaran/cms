@@ -99,6 +99,7 @@ class _ButtonList2State extends State<ButtonList2> {
       showModalBottomSheet(
           backgroundColor: Colors.blue[100],
           context: context,
+          isScrollControlled: true,
           builder: (context) {
             return Container(
               padding:
@@ -191,9 +192,10 @@ class _ButtonList2State extends State<ButtonList2> {
                                 email!, passwordController.text);
                             print(result2);
                             if (result2 == null) {
-                              setState(
-                                () => errorMessage(),
-                              );
+                              setState(() {
+                                Navigator.pop(context);
+                                errorMessage();
+                              });
                             } else {
                               collection.doc(user).delete().then((value) => '');
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -227,7 +229,8 @@ class _ButtonList2State extends State<ButtonList2> {
                   child: ElevatedButton(
                     child: Text(
                       'Modify',
-                      style: TextStyle(color: Colors.green.shade50, fontSize: 17.0),
+                      style: TextStyle(
+                          color: Colors.green.shade50, fontSize: 17.0),
                     ),
                     onPressed: () => _modifyUsername(),
                     style: textstyles,
@@ -241,7 +244,8 @@ class _ButtonList2State extends State<ButtonList2> {
                   child: ElevatedButton(
                     child: Text(
                       'Delete',
-                      style: TextStyle(color: Colors.red.shade50, fontSize: 17.0),
+                      style:
+                          TextStyle(color: Colors.red.shade50, fontSize: 17.0),
                     ),
                     onPressed: () async {
                       _deleteUserForm();
