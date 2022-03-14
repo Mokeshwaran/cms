@@ -110,6 +110,7 @@ class _ClassesListState extends State<ClassesList> {
                       'myclass': assignedClass,
                     });
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ));
           });
@@ -144,6 +145,7 @@ class _ClassesListState extends State<ClassesList> {
                         .update({
                       'myclass': 'Idle',
                     });
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                 ));
