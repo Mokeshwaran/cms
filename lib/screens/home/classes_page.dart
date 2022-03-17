@@ -1,12 +1,12 @@
 import 'package:cms/models/myclass.dart';
 import 'package:cms/services/dbase.dart';
-import 'package:cms/shared/button_list.dart';
+import 'package:cms/shared/button_list_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'class_list.dart';
 
-class UsersPage extends StatelessWidget {
-  const UsersPage({Key? key}) : super(key: key);
+class ClassesPage extends StatelessWidget {
+  const ClassesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class UsersPage extends StatelessWidget {
         backgroundColor: Colors.blue[800],
         appBar: AppBar(
           backgroundColor: Colors.orange[400],
-          title: const Text("Users"),
+          title: const Text("Classes"),
           elevation: 0.0,
         ),
         body: Container(
@@ -25,8 +25,9 @@ class UsersPage extends StatelessWidget {
           child: Column(
             children: const <Widget>[
               SizedBox(height: 4.0),
-              ButtonList2(),
-              Expanded(child: UsersList()),
+              ClassButtonList(),
+              SizedBox(height: 4.0),
+              Expanded(child: ClassesList()),
             ],
           ),
         ),

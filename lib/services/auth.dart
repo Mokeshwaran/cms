@@ -9,12 +9,12 @@ class AuthService {
     return user != null ? MyUser(uid: user.uid) : null;
   }
 
-  // auth change user stream
+  // user stream
   Stream<MyUser?> get user {
     return _auth.authStateChanges().map(_userfromFirebase);
   }
 
-  // sign in email password
+  // sign in w/ email password
   Future signInEmailPword(String email, String password) async {
     try {
       UserCredential result1 = await _auth.signInWithEmailAndPassword(
@@ -22,12 +22,12 @@ class AuthService {
       User? user1 = result1.user;
       return _userfromFirebase(user1);
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return null;
     }
   }
 
-  // reg with email password
+  // reg w/ email password
   Future registrationEmailPword(String email, String password) async {
     try {
       UserCredential result1 = await _auth.createUserWithEmailAndPassword(
@@ -35,10 +35,10 @@ class AuthService {
       User? user1 = result1.user;
 
       // create a new document for the user with the uid
-      await DbaseService(uid: user1!.uid).updateUserData('0', 'user');
+      await DbaseService(uid: user1!.uid).updateUserData('Idle', 'user');
       return _userfromFirebase(user1);
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return null;
     }
   }
@@ -47,6 +47,24 @@ class AuthService {
   Future signOut() async {
     try {
       return await _auth.signOut();
+    } catch (e) {
+      //print(e.toString());
+      return null;
+    }
+  }
+
+  Future deleteUser(String email, String password) async {
+    try {
+      User user = _auth.currentUser!;
+      AuthCredential credentials =
+          EmailAuthProvider.credential(email: email, password: password);
+      print(user);
+      print(password);
+      UserCredential result =
+          await user.reauthenticateWithCredential(credentials);
+      await DbaseService(uid: result.user?.uid).deleteuser();
+      await result.user?.delete();
+      return true;
     } catch (e) {
       print(e.toString());
       return null;

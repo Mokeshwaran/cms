@@ -1,7 +1,6 @@
-class Myclass {
-  
+class MyClass {
   final String? mycls;
   final String? name;
 
-  Myclass({ required this.mycls, required this.name });
+  MyClass({required this.mycls, required this.name});
 }

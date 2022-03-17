@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:cms/services/auth.dart';
 import 'package:cms/shared/loading.dart';
 import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignIn extends StatefulWidget {
   //const SignIn({Key? key, void Function() toggleView}) : super(key: key);
@@ -26,7 +29,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             backgroundColor: Colors.blue[800],
             appBar: AppBar(
@@ -37,9 +40,11 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(color: Colors.orange[50]),
               ),
               actions: <Widget>[
+                // ignore: deprecated_member_use
                 FlatButton.icon(
-                    icon: Icon(Icons.app_registration_rounded),
-                    label: Text('Register'),
+                    icon: const Icon(Icons.app_registration_rounded),
+                    label: const Text('Register',
+                        style: TextStyle(fontSize: 17.0)),
                     textColor: Colors.blue[600],
                     onPressed: () {
                       widget.switchPage();
@@ -47,7 +52,8 @@ class _SignInState extends State<SignIn> {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -61,7 +67,7 @@ class _SignInState extends State<SignIn> {
                             fontFamily: 'Nunito'),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                         style: TextStyle(color: Colors.blue[100]),
                         cursorColor: Colors.blue[100],
@@ -72,7 +78,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           hintText: 'Email',
                           hintStyle: TextStyle(
-                              fontSize: 15.0, color: Colors.blue.shade100),
+                              fontSize: 17.0, color: Colors.blue.shade100),
                           fillColor: Colors.blue[600],
                           filled: true,
                           enabledBorder: OutlineInputBorder(
@@ -85,10 +91,14 @@ class _SignInState extends State<SignIn> {
                         ),
                         validator: (val) =>
                             val!.isEmpty ? 'Enter an email' : null,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              new RegExp(r"\s\b|\b\s"))
+                        ],
                         onChanged: (val) {
                           setState(() => email = val);
                         }),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                         style: TextStyle(color: Colors.blue[100]),
                         cursorColor: Colors.blue[100],
@@ -99,7 +109,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           hintText: 'Password',
                           hintStyle: TextStyle(
-                              fontSize: 15.0, color: Colors.blue.shade100),
+                              fontSize: 17.0, color: Colors.blue.shade100),
                           fillColor: Colors.blue[600],
                           filled: true,
                           enabledBorder: OutlineInputBorder(
@@ -117,32 +127,36 @@ class _SignInState extends State<SignIn> {
                         onChanged: (val) {
                           setState(() => password = val);
                         }),
-                    SizedBox(height: 20.0),
-                    ElevatedButton(
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(color: Colors.orange.shade50),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          dynamic result2 =
-                              await _auth.signInEmailPword(email, password);
-                          if (result2 == null) {
-                            setState(() {
-                              error =
-                                  'Could not sign in, please check email/password';
-                              loading = false;
-                            });
+                    const SizedBox(height: 20.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                              color: Colors.orange.shade50, fontSize: 17.0),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            dynamic result2 =
+                                await _auth.signInEmailPword(email, password);
+                            if (result2 == null) {
+                              setState(() {
+                                error =
+                                    'Could not sign in, please check email/password';
+                                loading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: textstyles_main,
+                        },
+                        style: textstyles_main,
+                      ),
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
                   ],
                 ),

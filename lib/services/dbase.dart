@@ -18,9 +18,9 @@ class DbaseService {
   }
 
   // class list from snapshot
-  List<Myclass> _myclassList(QuerySnapshot querySnapshot) {
+  List<MyClass> _myclassList(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((docs) {
-      return Myclass(
+      return MyClass(
           mycls: docs.get('myclass') ?? '', name: docs.get('name') ?? '');
     }).toList();
   }
@@ -33,12 +33,16 @@ class DbaseService {
   }
 
   // get class stream
-  Stream<List<Myclass>> get classes {
+  Stream<List<MyClass>> get classes {
     // 'classes' can be whatever you want
     return classCluster.snapshots().map(_myclassList);
   }
 
   Stream<UserData> get userData {
     return classCluster.doc(uid).snapshots().map(_userDataSnap);
+  }
+
+  Future deleteuser() {
+    return classCluster.doc(uid).delete();
   }
 }
