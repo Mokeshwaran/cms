@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cms/models/myclass.dart';
 import 'package:cms/screens/home/class_settings_form.dart';
+import 'package:cms/services/notif_api.dart';
 import 'package:cms/shared/text_styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart' as tz;
 import 'myclass_tile.dart';
 
 //myclasslist
@@ -56,14 +61,77 @@ class _UsersListState extends State<UsersList> {
 }
 
 class ClassesList extends StatefulWidget {
-  const ClassesList({Key? key}) : super(key: key);
+  const ClassesList({Key? key, this.notificationAppLaunchDetails})
+      : super(key: key);
 
+  static const String routeName = '/';
+
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails;
   @override
   _ClassesListState createState() => _ClassesListState();
 }
 
 class _ClassesListState extends State<ClassesList> {
+  String? currentUserName;
+
+  void initState() {
+    super.initState();
+    _requestPermissions();
+    FirebaseFirestore.instance
+        .collection('classes')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      currentUserName = snapshot['name'];
+    });
+  }
+
+  void _requestPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> _showNotification() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        2,
+        'Session Expiring Soon',
+        'Hey, $currentUserName your session is expiring in less than 5 minutes',
+        tz.TZDateTime.now(tz.local).add(const Duration(minutes: 35)),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                'your channel id', 'your channel name',
+                channelDescription: 'your channel description')),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  Future<void> _showOngoingNotification(assignedClass) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('your channel id', 'your channel name',
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ongoing: true,
+            autoCancel: false);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Current Session', '$assignedClass', platformChannelSpecifics);
+  }
+
+  Future<void> _cancelNotif() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   String? classId;
 
   Widget buildList(QuerySnapshot? snapshot) {
@@ -109,6 +177,25 @@ class _ClassesListState extends State<ClassesList> {
                         .update({
                       'myclass': assignedClass,
                     });
+                    if (assignedClass != 'Idle') {
+                      setState(() {
+                        _showNotification();
+                        _showOngoingNotification(assignedClass);
+                      });
+
+                      Future.delayed(const Duration(minutes: 40), () async {
+                        await FirebaseFirestore.instance
+                            .collection('classes')
+                            .doc(auth.currentUser?.uid)
+                            .update({
+                          'myclass': 'Idle',
+                        });
+                      });
+                    } else {
+                      setState(() {
+                        _cancelNotif();
+                      });
+                    }
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
@@ -139,13 +226,16 @@ class _ClassesListState extends State<ClassesList> {
                         fontSize: 17.0),
                   ),
                   onPressed: () async {
+                    setState(() {
+                      _cancelNotif();
+                    });
+
                     await FirebaseFirestore.instance
                         .collection('classes')
                         .doc(auth.currentUser?.uid)
                         .update({
                       'myclass': 'Idle',
                     });
-                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                 ));
