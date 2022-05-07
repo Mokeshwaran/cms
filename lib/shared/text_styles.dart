@@ -28,6 +28,19 @@ final textstyles_delete = ButtonStyle(
   ),
 );
 
+final textstyles_cancel = ButtonStyle(
+  backgroundColor: MaterialStateProperty.all(Colors.blue.shade500),
+  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(7.5),
+      side: BorderSide(
+        color: Colors.blue.shade500,
+        width: 2.0,
+      ),
+    ),
+  ),
+);
+
 final textstyles_main = ButtonStyle(
   backgroundColor: MaterialStateProperty.all(Colors.orange.shade400),
   shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -97,10 +97,14 @@ class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
     return Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              "Modify the Class",
-              style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+            Center(
+              child: Text(
+                "Modify the Class",
+                style: TextStyle(fontSize: 18.0, color: Colors.blue[600]),
+              ),
             ),
             const SizedBox(height: 20.0),
             TextFormField(
@@ -110,9 +114,8 @@ class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
                 style: TextStyle(color: Colors.blue[200]),
                 cursorColor: Colors.blue[100],
                 decoration: textInputDecoration,
-                validator: (value) {
-                  value!.isEmpty ? 'Please Enter A Classname' : null;
-                },
+                validator: (value) =>
+                    value!.isEmpty ? 'Please Enter A Classname' : null,
                 onChanged: (value) {
                   if (value != null && value != "") {
                     setState(() => _modifiedClass = value);
@@ -121,26 +124,32 @@ class _ClassSettingsFormModifyState extends State<ClassSettingsFormModify> {
                   }
                 }),
             const SizedBox(height: 10.0),
-            ElevatedButton(
-                style: textstyles_main,
-                child: const Text(
-                  "Update",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .collection("myclasses")
-                      .doc(widget.id)
-                      .update(
-                    {
-                      'classID': widget.id,
-                      'myclass': _modifiedClass,
-                    },
-                  );
-                  Navigator.pop(context);
-                }
-                //_fieldText.clear();
-                ),
+            Center(
+              child: ElevatedButton(
+                  style: textstyles_main,
+                  child: const Text(
+                    "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
+                        .collection("myclasses")
+                        .doc(widget.id)
+                        .update(
+                      {
+                        'classID': widget.id,
+                        'myclass': _modifiedClass,
+                      },
+                    );
+                    Navigator.pop(context);
+                  }
+                  //_fieldText.clear();
+                  ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+            ),
           ],
         ));
   }

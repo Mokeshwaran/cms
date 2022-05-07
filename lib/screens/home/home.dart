@@ -5,6 +5,7 @@ import 'package:cms/services/auth.dart';
 import 'package:cms/services/dbase.dart';
 import 'package:cms/screens/home/class_list.dart';
 import 'package:cms/shared/button_list.dart';
+import 'package:cms/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +22,7 @@ class Home extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Colors.blue[800],
           appBar: AppBar(
-            title: Text('Class Management System',
-                style: TextStyle(color: Colors.yellow[50])),
+            title: Text('CAMS', style: TextStyle(color: Colors.yellow[50])),
             backgroundColor: Colors.orange[400],
             elevation: 0.0,
             actions: <Widget>[
@@ -36,7 +36,48 @@ class Home extends StatelessWidget {
                   primary: Colors.blue[600],
                 ),
                 onPressed: () async {
-                  await _auth.signOut();
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.blue[100],
+                          title: Text(
+                            "Logging Out",
+                            style: TextStyle(
+                                color: Colors.blue.shade500, fontSize: 17.0),
+                          ),
+                          content: Text(
+                            "Are you sure you want to logout?",
+                            style: TextStyle(
+                                color: Colors.blue.shade500, fontSize: 17.0),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              style: textstyles_delete,
+                              child: Text(
+                                "Logout",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17.0),
+                              ),
+                              onPressed: () async {
+                                await _auth.signOut();
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ElevatedButton(
+                              style: textstyles_cancel,
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17.0),
+                              ),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      });
                 },
               )
             ],

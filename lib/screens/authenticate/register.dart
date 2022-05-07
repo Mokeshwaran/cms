@@ -25,6 +25,7 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error = '';
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +60,9 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   children: <Widget>[
                     RichText(
+                      textAlign: TextAlign.center,
                       text: TextSpan(
-                        text: 'Class Management System',
+                        text: 'Classroom Allocation and Management System',
                         style: TextStyle(
                             color: Colors.blue[100],
                             fontSize: 25,
@@ -108,6 +110,18 @@ class _RegisterState extends State<Register> {
                             color: Colors.blue.shade100,
                           ),
                           hintText: 'Password',
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              color: Colors.blue.shade100,
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              }),
                           hintStyle: TextStyle(
                               fontSize: 17.0, color: Colors.blue.shade100),
                           fillColor: Colors.blue[600],
@@ -120,7 +134,7 @@ class _RegisterState extends State<Register> {
                                   color: Colors.orange.shade400, width: 1.0),
                               borderRadius: BorderRadius.circular(20)),
                         ),
-                        obscureText: true,
+                        obscureText: _isObscure,
                         validator: (val) => val!.length < 8
                             ? 'Password must be more than 8 characters'
                             : null,

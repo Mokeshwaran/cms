@@ -112,6 +112,21 @@ class _ClassesListState extends State<ClassesList> {
             UILocalNotificationDateInterpretation.absoluteTime);
   }
 
+  Future<void> _showEndNotification() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        3,
+        'Session Ended',
+        'Hey, $currentUserName your session has expired, update next class in app.',
+        tz.TZDateTime.now(tz.local).add(const Duration(minutes: 40)),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                'your channel id', 'your channel name',
+                channelDescription: 'your channel description')),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
   Future<void> _showOngoingNotification(assignedClass) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails('your channel id', 'your channel name',
@@ -139,6 +154,7 @@ class _ClassesListState extends State<ClassesList> {
       showModalBottomSheet(
           backgroundColor: Colors.blue[100],
           context: context,
+          isScrollControlled: true,
           builder: (context) {
             return Container(
               padding:
@@ -180,6 +196,7 @@ class _ClassesListState extends State<ClassesList> {
                     if (assignedClass != 'Idle') {
                       setState(() {
                         _showNotification();
+                        _showEndNotification();
                         _showOngoingNotification(assignedClass);
                       });
 

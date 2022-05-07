@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:cms/models/MyUser.dart';
 import 'package:cms/screens/wrapper.dart';
 import 'package:cms/services/auth.dart';
